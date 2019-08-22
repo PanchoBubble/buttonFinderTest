@@ -21,12 +21,13 @@ class ButtonFinder:
     
     def __get_target_button(self, html, origin_ok_button):
         soup = bs(html, features="html.parser")
-        constainer_div = soup.find('div', {'class':'panel-body'})
+        constainer_div = soup.find('div', {'class':'panel panel-default'})
         buttonAttrs = {
             'id' : origin_ok_button.attrs['id'],
-            'rel' : origin_ok_button.attrs['rel'],
+            'text' : origin_ok_button.get_text(),
+            'onclick' : origin_ok_button.attrs['onclick'],
             'class' : origin_ok_button.attrs['class'][1],
-            'text' : origin_ok_button.get_text()
+            'rel' : origin_ok_button.attrs['rel'],
         }
         for key in list(buttonAttrs.keys()):
             target_button = constainer_div.find('a', {key :buttonAttrs[key]})
