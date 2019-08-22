@@ -24,19 +24,24 @@ class ButtonFinder:
         constainer_div = soup.find('div', {'class':'panel-body'})
         buttonAttrs = {
             'id' : origin_ok_button.attrs['id'],
+            'rel' : origin_ok_button.attrs['rel'],
             'class' : origin_ok_button.attrs['class'][1],
-            'text' : (origin_ok_button.get_text()).strip()
+            'text' : origin_ok_button.get_text()
         }
         for key in list(buttonAttrs.keys()):
             target_button = constainer_div.find('a', {key :buttonAttrs[key]})
             if target_button is not None:
                 return target_button
         else:
-            return 'Button has not been found'
+            print('Button has not been found')
+            return None
 
     def __get_element_xpath(self, element):
         nodes = []
-        for parent in element.parents:  # type: bs4.element.Tag
+        if not element:
+            print('No element has been provided')
+            return  None
+        for parent in element.parents:  
             siblings = parent.find_all(element.name, recursive=False)
             if len(siblings) == 1:
                 nodes.append(element.name)
